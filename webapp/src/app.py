@@ -1,3 +1,4 @@
+import os
 import requests
 from fastapi import FastAPI, HTTPException
 
@@ -6,8 +7,7 @@ app = FastAPI()
 
 @app.get("/")
 def hello():
-    # TODO: Replace the message below with the value of a configuration parameter
-    return {"message": "Hello, World!"}
+    return {"message": os.environ.get('hello_message', 'Hello, World!')}
 
 
 @app.get("/data")
