@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: eu.gcr.io/code-assignment-10/webapp-candidateName
+  repository: eu.gcr.io/code-assignment-10/webapp-humphrey
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -23,4 +23,8 @@ serviceAccount:
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8000
+
+env:
+  - name: hello_message
+    value: 'Hello, Helm!'
