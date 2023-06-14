@@ -20,12 +20,14 @@ def get_star_wars_data(num: int = 1):
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         return response.json()
-    except requests.exceptions.HTTPError as e:
-        raise HTTPException(status_code=500, detail="API Error")
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=503, detail="Service Unavailable")
-    except (KeyError, ValueError) as e:
-        raise HTTPException(status_code=500, detail="Data Processing Error")
+    except requests.exceptions.HTTPError as ex:
+        raise HTTPException(status_code=500, detail="API Error") from ex
+    except requests.exceptions.RequestException as ex:
+        raise HTTPException(status_code=503, detail="Service Unavailable") \
+              from ex
+    except (KeyError, ValueError) as ex:
+        raise HTTPException(status_code=500, detail="Data Processing Error") \
+              from ex
 
 
 @app.get("/top-people-by-bmi")
@@ -54,15 +56,17 @@ def get_top_people_by_bmi():
         sorted_people = sorted(people, key=lambda x: x["bmi"], reverse=True)
         top_people = sorted_people[:20]
         return top_people
-    except requests.exceptions.HTTPError as e:
-        raise HTTPException(status_code=500, detail="API Error")
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=503, detail="Service Unavailable")
-    except (KeyError, ValueError) as e:
-        raise HTTPException(status_code=500, detail="Data Processing Error")
+    except requests.exceptions.HTTPError as ex:
+        raise HTTPException(status_code=500, detail="API Error") from ex
+    except requests.exceptions.RequestException as ex:
+        raise HTTPException(status_code=503, detail="Service Unavailable") \
+              from ex
+    except (KeyError, ValueError) as ex:
+        raise HTTPException(status_code=500, detail="Data Processing Error") \
+              from ex
 
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run("app:app", host="0.0.0.0", port=8000)
