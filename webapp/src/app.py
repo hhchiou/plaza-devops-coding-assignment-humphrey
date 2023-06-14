@@ -25,7 +25,37 @@ def get_star_wars_data(num: int = 1):
         raise HTTPException(status_code=500, detail="Data Processing Error")
 
 
-# TODO: Add new endpoint to return the top 20 people in the Star Wars API with the highest BMI.
+@app.get("/top-people-by-bmi")
+def get_top_people_by_bmi():
+    try:
+        url = "https://swapi.dev/api/people"
+        people = []
+        while True:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            for person in data["results"]:
+                if "unknown" == person["mass"] or \
+                   "unknown" == person["height"]:
+                    # print(person["name"], person["url"], "unknown m/h")
+                    continue
+                mass = float(person["mass"].replace(',', ''))
+                height = float(person["height"].replace(',', '')) / 100
+                bmi = mass / (height * height)
+                person["bmi"] = bmi
+                people.append(person)
+            url = data["next"]
+            if url is None:
+                break
+        sorted_people = sorted(people, key=lambda x: x["bmi"], reverse=True)
+        top_people = sorted_people[:20]
+        return top_people
+    except requests.exceptions.HTTPError as e:
+        raise HTTPException(status_code=500, detail="API Error")
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=503, detail="Service Unavailable")
+    except (KeyError, ValueError) as e:
+        raise HTTPException(status_code=500, detail="Data Processing Error")
 
 
 if __name__ == "__main__":
