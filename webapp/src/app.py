@@ -1,3 +1,4 @@
+"""Sample web applications."""
 import os
 import requests
 from fastapi import FastAPI, HTTPException
@@ -7,11 +8,13 @@ app = FastAPI()
 
 @app.get("/")
 def hello():
+    """Return a pre-defined message from helm chart or just hello."""
     return {"message": os.environ.get('hello_message', 'Hello, World!')}
 
 
 @app.get("/data")
 def get_star_wars_data(num: int = 1):
+    """Query Star Wars people by num (default: 1)."""
     try:
         url = f"https://swapi.dev/api/people/{num}"
         response = requests.get(url, timeout=5)
@@ -27,6 +30,7 @@ def get_star_wars_data(num: int = 1):
 
 @app.get("/top-people-by-bmi")
 def get_top_people_by_bmi():
+    """Get 20 Star Wars people with the highest BMI."""
     try:
         url = "https://swapi.dev/api/people"
         people = []
