@@ -11,10 +11,10 @@ def hello():
 
 
 @app.get("/data")
-def get_star_wars_data():
+def get_star_wars_data(num: int = 1):
     try:
-        # TODO: Replace the "1" in the URL below with the value of a query parameter
-        response = requests.get("https://swapi.dev/api/people/1", timeout=5)
+        url = f"https://swapi.dev/api/people/{num}"
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError as e:
