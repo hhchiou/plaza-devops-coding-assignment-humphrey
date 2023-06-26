@@ -22,7 +22,7 @@ serviceAccount:
   name: ""
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8000
 
 env:
