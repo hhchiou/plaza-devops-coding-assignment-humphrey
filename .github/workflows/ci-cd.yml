@@ -39,6 +39,7 @@ jobs:
 
       - name: Run tests
         run: |
+          pip install -r webapp/requirements.txt
           pytest -v webapp/tests/
 
       - name: Setup Workload Identity Federation
