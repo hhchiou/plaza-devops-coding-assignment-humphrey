@@ -14,6 +14,32 @@ def test_api_http_error():
     response = client.get("/data?num=65535")
     assert response.status_code == 500
     assert response.json()["detail"] == "API Error"
+    response = client.get("/data?num=abc")
+    assert response.status_code == 422
+    assert "detail" in response.json()
+
+
+def test_get_star_wars_data_pp():
+    client = TestClient(app)
+    response = client.get("/data/1")
+    assert response.status_code == 200
+    assert "name" in response.json()
+
+
+def test_api_http_error_pp():
+    client = TestClient(app)
+    response = client.get("/data/65535")
+    assert response.status_code == 500
+    assert response.json()["detail"] == "API Error"
+    response = client.get("/data/abc")
+    assert response.status_code == 422
+    assert "detail" in response.json()
+
+
+def test_api_nonexist():
+    client = TestClient(app)
+    response = client.get("/nonexist")
+    assert response.status_code == 404
 
 
 def test_api_hello():

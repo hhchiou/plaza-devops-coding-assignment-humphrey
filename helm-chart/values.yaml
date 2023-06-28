@@ -21,6 +21,9 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+container:
+  port: 8000
+
 service:
   type: LoadBalancer
   port: 8000

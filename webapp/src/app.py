@@ -12,9 +12,15 @@ def hello():
     return {"message": os.environ.get('hello_message', 'Hello, World!')}
 
 
+@app.get("/data/{num}")
+def get_star_wars_data_pp(num: int = 1):
+    """Query Star Wars people by num (default: 1), with Path Parameter."""
+    return get_star_wars_data(num)
+
+
 @app.get("/data")
 def get_star_wars_data(num: int = 1):
-    """Query Star Wars people by num (default: 1)."""
+    """Query Star Wars people by num (default: 1), with Query Parameter."""
     try:
         url = f"https://swapi.dev/api/people/{num}"
         response = requests.get(url, timeout=5)
